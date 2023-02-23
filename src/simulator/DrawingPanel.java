@@ -27,6 +27,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	private double zoomSpeed = 1.0f;
 	private int framerate;
 	private HashSet<Character> pressedKeyCodes;
+	private boolean displayFps = true;
 
 	private final Font fpsFont = new Font("", Font.PLAIN, 24);
 	private final Point fpsPosition = new Point(50, 50);
@@ -56,13 +57,15 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void handleMovement() {
-		if(pressedKeyCodes.contains('w')) sceneCamera.y += cameraMovementSpeed / framerate / sceneCamera.zoom;
-		if(pressedKeyCodes.contains('s')) sceneCamera.y -= cameraMovementSpeed / framerate / sceneCamera.zoom;
-		if(pressedKeyCodes.contains('a')) sceneCamera.x += cameraMovementSpeed / framerate / sceneCamera.zoom;
-		if(pressedKeyCodes.contains('d')) sceneCamera.x -= cameraMovementSpeed / framerate / sceneCamera.zoom;		
+		double dx = cameraMovementSpeed / framerate / sceneCamera.zoom;
+		double dz = 1 + zoomSpeed / framerate;
+		if(pressedKeyCodes.contains('w')) sceneCamera.y += dx;
+		if(pressedKeyCodes.contains('s')) sceneCamera.y -= dx;
+		if(pressedKeyCodes.contains('a')) sceneCamera.x += dx;
+		if(pressedKeyCodes.contains('d')) sceneCamera.x -= dx;	
 
-		if(pressedKeyCodes.contains('+')) sceneCamera.zoom *= (1 + zoomSpeed / framerate);
-		if(pressedKeyCodes.contains('-')) sceneCamera.zoom /= (1 + zoomSpeed / framerate);		
+		if(pressedKeyCodes.contains('+')) sceneCamera.zoom *= dz;
+		if(pressedKeyCodes.contains('-')) sceneCamera.zoom /= dz; 
 	}
 
 	public void addEntity(Vec2d pos) {	
@@ -97,6 +100,9 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	void drawFps(Graphics2D g) {
+		if(!displayFps)
+			return;
+
 		long newTime = System.nanoTime();
 		long nsSpent = newTime - oldTime;
 		oldTime = newTime;

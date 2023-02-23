@@ -11,13 +11,16 @@ public class EcosystemSimulator{
 	public static void main(String[] args) {
 		Entity testEntity1 = new Entity();
 		Entity testEntity2 = new Entity(new Vec2d(100, 200));
-	
+
 		int i = 0;
 		for(i = 0; i < Math.sqrt(100*100 + 200*200) / 10 * framerate + 1; i++){		
 			testEntity1.moveTowards(testEntity2);
 			testEntity1.println();
+			testEntity1.applyDamage(0.01);
 		}
 		System.out.println("i = " + String.valueOf(i));
+		testEntity1.applyDamage(1000);
+		testEntity1.println();
 	}
 
 	public static void runWindow() {
