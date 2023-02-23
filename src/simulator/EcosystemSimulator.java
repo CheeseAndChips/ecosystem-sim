@@ -9,6 +9,18 @@ public class EcosystemSimulator{
 	public static final int framerate = 60;
 
 	public static void main(String[] args) {
+		Entity testEntity1 = new Entity();
+		Entity testEntity2 = new Entity(new Vec2d(100, 200));
+	
+		int i = 0;
+		for(i = 0; i < Math.sqrt(100*100 + 200*200) / 10 * framerate + 1; i++){		
+			testEntity1.moveTowards(testEntity2);
+			testEntity1.println();
+		}
+		System.out.println("i = " + String.valueOf(i));
+	}
+
+	public static void runWindow() {
 		JFrame frame = new JFrame();
 		DrawingPanel panel = new DrawingPanel(framerate);
 
@@ -19,6 +31,7 @@ public class EcosystemSimulator{
 		frame.add(panel);
 		frame.setVisible(true);
 
-		panel.addEntity(new Vec2d(150, 150));
+		panel.addEntity(new Vec2d(0, 0));
+		panel.addEntity(new Vec2d(200, 200));
 	}
 }

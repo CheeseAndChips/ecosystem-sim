@@ -17,16 +17,26 @@ public class Vec2d {
 	}
 
 	public String toString() {
-		return String.format("{%f %f}", x, y);
-	}
-	
-	public double getDistSqr(Vec2d other) {
-		double dx = x - other.x;
-		double dy = y - other.y;
-		return dx*dx + dy*dy;
+		return String.format("{%.2f; %.2f}", x, y);
 	}
 
-	public double getDist(Vec2d other) {
-		return Math.sqrt(getDistSqr(other));
+	public Vec2d subtract(Vec2d other) {
+		return new Vec2d(x - other.x, y - other.y);
+	}
+
+	public double getMagnitudeSqr() {
+		return x*x + y*y; 
+	}
+
+	public double getMagnitude() {
+		return Math.sqrt(getMagnitudeSqr());
+	}
+
+	public void capMagnitude(double maxMagnitude) {
+		double magnitude = getMagnitude();
+		if(magnitude > maxMagnitude) {
+			x *= maxMagnitude / magnitude;
+			y *= maxMagnitude / magnitude;
+		}
 	}
 }
