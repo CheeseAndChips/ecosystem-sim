@@ -4,17 +4,18 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class EcosystemSimulator{
+public class EcosystemSimulator {
 	public static final Dimension windowSize = new Dimension(1280, 720);
 	public static final int framerate = 60;
 
 	public static void main(String[] args) {
 		Entity testEntity1 = new Entity();
-		Entity testEntity2 = new Entity(new Vec2d(100, 200));
-
+		Entity testEntity2 = new Entity(new Vec2d(300, 200));
+		double dist = Entity.calculateDistance(testEntity1, testEntity2);
+		int iterCnt = (int)(dist / 10 * framerate + 1);
 		int i = 0;
-		for(i = 0; i < Math.sqrt(100*100 + 200*200) / 10 * framerate + 1; i++){		
-			testEntity1.moveTowards(testEntity2);
+		for(i = 0; i < iterCnt; i++){		
+			testEntity1.moveTowards(testEntity2, 1 / (double)framerate);
 			testEntity1.println();
 			testEntity1.applyDamage(0.01);
 		}
