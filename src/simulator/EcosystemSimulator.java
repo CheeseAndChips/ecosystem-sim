@@ -8,7 +8,11 @@ public class EcosystemSimulator {
 	public static final Dimension windowSize = new Dimension(1280, 720);
 	public static final int framerate = 60;
 
-	public static void main(String[] args) {
+	public static void main(String args[]) {
+		runWindow();	
+	}
+
+	public static void textTesting() {
 		Animal testEntity1 = new Animal();
 		Animal testEntity2 = new Animal(new Vec2d(300, 200));
 		double dist = Animal.calculateDistance(testEntity1, testEntity2);
@@ -35,7 +39,7 @@ public class EcosystemSimulator {
 		frame.add(panel);
 		frame.setVisible(true);
 
-		panel.addEntity(new Vec2d(0, 0));
-		panel.addEntity(new Vec2d(200, 200));
+		panel.addWolf(new Wolf(100.0f, new Vec2d(0, 0)));
+		panel.addRabbit(new Rabbit(new Vec2d(200, 200)));
 	}
 }

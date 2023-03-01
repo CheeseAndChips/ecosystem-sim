@@ -9,8 +9,8 @@ public class Animal {
 	private double movementSpeed = 10.0;
 
 	// for painting 
-	private static final int circleRadius = 20;
-	private static final Color circleColor = Color.GRAY;
+	public Color getDrawColor() { return Color.GRAY; }
+	public int getCircleRadius() { return 20; }
 
 	public Animal() {
 		this(new Vec2d(0, 0));	
@@ -54,17 +54,10 @@ public class Animal {
 		}
 	}
 
-	public String toString() {
-		return String.format("{Entity at %s with health %.1f}", getPosition(), getHealth());
-	}
-
-	public void println() {
-		System.out.println(this);
-	}
-
 	public void draw(Graphics2D g) {
 		Color oldc = g.getColor();
-		g.setColor(circleColor);
+		int circleRadius = getCircleRadius();
+		g.setColor(getDrawColor());
 		g.fillOval((int)(position.x - circleRadius), (int)(position.y - circleRadius), 2*circleRadius, 2*circleRadius);
 		g.setColor(oldc);
 	}

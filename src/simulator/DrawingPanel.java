@@ -19,7 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class DrawingPanel extends JPanel implements ActionListener {
-	private List<Animal> entities;
+	private List<Wolf> wolves;
+	private List<Rabbit> rabbits;
+
 	private Timer timer;
 	private long oldTime;
 	public Camera sceneCamera;
@@ -38,7 +40,8 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		setFocusable(true);
 		requestFocusInWindow();
 
-		entities = new ArrayList<>();
+		wolves = new ArrayList<>();
+		rabbits = new ArrayList<>();
 		pressedKeyCodes = new HashSet<Character>();
 		sceneCamera = new Camera();
 		timer = new Timer(1000 / framerate, this);
@@ -68,8 +71,12 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		if(pressedKeyCodes.contains('-')) sceneCamera.zoom /= dz; 
 	}
 
-	public void addEntity(Vec2d pos) {	
-		entities.add(new Animal(pos));
+	public void addWolf(Wolf animal) {
+		wolves.add(animal);
+	}
+
+	public void addRabbit(Rabbit animal) {
+		rabbits.add(animal);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -90,7 +97,10 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		newTransform.scale(sceneCamera.zoom, sceneCamera.zoom);
 		newTransform.translate(sceneCamera.x, sceneCamera.y);
 		g2.setTransform(newTransform);
-		for(Animal ent : entities) {
+		for(Animal ent : rabbits) {
+			ent.draw(g2);
+		}
+		for(Animal ent : wolves) {
 			ent.draw(g2);
 		}
 		g2.setTransform(oldTransform);
