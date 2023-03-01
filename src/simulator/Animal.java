@@ -3,7 +3,7 @@ package simulator;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Entity {
+public class Animal {
 	private Vec2d position;
 	private double health = 100.0;
 	private double movementSpeed = 10.0;
@@ -12,11 +12,11 @@ public class Entity {
 	private static final int circleRadius = 20;
 	private static final Color circleColor = Color.GRAY;
 
-	public Entity() {
+	public Animal() {
 		this(new Vec2d(0, 0));	
 	}
 
-	public Entity(Vec2d position) {
+	public Animal(Vec2d position) {
 		this.position = position;
 	}
 
@@ -28,7 +28,7 @@ public class Entity {
 		position = new Vec2d(newPosition);
 	}
 
-	public void moveTowards(Entity other, double dt) {
+	public void moveTowards(Animal other, double dt) {
 		moveTowards(other.position, dt);
 	}
 
@@ -69,7 +69,7 @@ public class Entity {
 		g.setColor(oldc);
 	}
 
-	public static double calculateDistance(Entity a, Entity b) {
+	public static double calculateDistance(Animal a, Animal b) {
 		return a.getPosition().subtract(b.getPosition()).getMagnitude();
 	}
 }

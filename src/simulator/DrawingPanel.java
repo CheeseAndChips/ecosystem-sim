@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class DrawingPanel extends JPanel implements ActionListener {
-	private List<Entity> entities;
+	private List<Animal> entities;
 	private Timer timer;
 	private long oldTime;
 	public Camera sceneCamera;
@@ -69,7 +69,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void addEntity(Vec2d pos) {	
-		entities.add(new Entity(pos));
+		entities.add(new Animal(pos));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		newTransform.scale(sceneCamera.zoom, sceneCamera.zoom);
 		newTransform.translate(sceneCamera.x, sceneCamera.y);
 		g2.setTransform(newTransform);
-		for(Entity ent : entities) {
+		for(Animal ent : entities) {
 			ent.draw(g2);
 		}
 		g2.setTransform(oldTransform);

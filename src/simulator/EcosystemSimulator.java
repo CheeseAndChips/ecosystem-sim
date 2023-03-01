@@ -9,9 +9,9 @@ public class EcosystemSimulator {
 	public static final int framerate = 60;
 
 	public static void main(String[] args) {
-		Entity testEntity1 = new Entity();
-		Entity testEntity2 = new Entity(new Vec2d(300, 200));
-		double dist = Entity.calculateDistance(testEntity1, testEntity2);
+		Animal testEntity1 = new Animal();
+		Animal testEntity2 = new Animal(new Vec2d(300, 200));
+		double dist = Animal.calculateDistance(testEntity1, testEntity2);
 		int iterCnt = (int)(dist / 10 * framerate + 1);
 		int i = 0;
 		for(i = 0; i < iterCnt; i++){		
