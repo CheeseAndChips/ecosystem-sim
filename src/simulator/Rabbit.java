@@ -9,10 +9,14 @@ class Rabbit extends Animal {
 	public int getCircleRadius() { return 15; }
 
 	public Rabbit() {
-		
+				
 	}
 
 	public Rabbit(Vec2d position) {
 		super(position);
+	}
+
+	public void doTick() {
+		
 	}
 }

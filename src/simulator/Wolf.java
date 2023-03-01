@@ -4,6 +4,7 @@ import java.awt.Color;
 
 class Wolf extends Animal {
 	private double visionRadius;
+	private static final double killRadius = 10.0f;
 
 	@Override
 	public Color getDrawColor() { return Color.RED; }
@@ -20,7 +21,26 @@ class Wolf extends Animal {
 		this.visionRadius = visionRadius;
 	}
 
-	public void findClosestAttackable() {
-		
+	public Rabbit findClosestAttackable() {
+		Rabbit found = this.panel.findClosestRabbit(getPosition());
+		if(found == null)
+			return null;
+		double distance = Animal.calculateDistance(this, found);
+		if(distance >= visionRadius)
+			return null;
+		return found;
+	}
+
+	public void doTick() {
+		Rabbit toAttack = findClosestAttackable();
+		if(toAttack == null) {
+			moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
+		} else {
+			moveTowards(toAttack, 1.0 / EcosystemSimulator.framerate);
+
+			if(Animal.calculateDistance(this, toAttack) <= killRadius) {
+				panel.registerDead(toAttack);	
+			}
+		}
 	}
 }

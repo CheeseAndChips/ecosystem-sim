@@ -75,15 +75,59 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void addWolf(Wolf animal) {
+		animal.registerDrawingPanel(this);
 		wolves.add(animal);
 	}
 
 	public void addRabbit(Rabbit animal) {
+		animal.registerDrawingPanel(this);
 		rabbits.add(animal);
+	}
+
+	public void handleAnimalAI() {
+		for(Rabbit r : rabbits) {
+			r.doTick();
+		}
+		for(Wolf w : wolves) {
+			w.doTick();
+		}
+	}
+
+	public void registerDead(Animal animal) {
+		System.out.println("Registered as dead");
+		if(animal instanceof Wolf) wolves.remove(animal);
+		else if(animal instanceof Rabbit) rabbits.remove(animal);
+	}
+
+	public Wolf findClosestWolf(Vec2d point) {
+		Wolf result = null;
+		double dist = Double.POSITIVE_INFINITY;
+		for(Wolf w : wolves) {
+			double currDist = w.getPosition().distanceTo(point);
+			if(dist > currDist) {
+				dist = currDist;
+				result = w;
+			}
+		}
+		return result;
+	}
+
+	public Rabbit findClosestRabbit(Vec2d point) {
+		Rabbit result = null;
+		double dist = Double.POSITIVE_INFINITY;
+		for(Rabbit r : rabbits) {
+			double currDist = r.getPosition().distanceTo(point);
+			if(dist > currDist) {
+				dist = currDist;
+				result = r;
+			}
+		}
+		return result;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		handleCameraMovement();
+		handleAnimalAI();
 		repaint();
 	}
 	

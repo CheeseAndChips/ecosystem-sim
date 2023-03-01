@@ -2,11 +2,15 @@ package simulator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Random;
 
-public class Animal {
+public abstract class Animal {
 	private Vec2d position;
-	private double health = 100.0;
-	private double movementSpeed = 10.0;
+	protected double health = 100.0;
+	protected double movementSpeed = 50.0;
+	protected DrawingPanel panel;
+
+	protected double lastMovementAngle = EcosystemSimulator.rng.nextDouble() * 2 * Math.PI;
 
 	// for painting 
 	public Color getDrawColor() { return Color.GRAY; }
@@ -19,6 +23,12 @@ public class Animal {
 	public Animal(Vec2d position) {
 		this.position = position;
 	}
+
+	public void registerDrawingPanel(DrawingPanel panel) {
+		this.panel = panel;
+	}
+
+	public abstract void doTick();
 
 	public Vec2d getPosition() {
 		return new Vec2d(position);
@@ -38,9 +48,18 @@ public class Animal {
 		relativeMove(dx);
 	}
 
+	public void moveWithAngle(double ang, double dt) {
+		Vec2d dx = new Vec2d(
+			Math.cos(ang) * movementSpeed * dt,
+			Math.sin(ang) * movementSpeed * dt
+		);
+		relativeMove(dx);
+	}
+
 	public void relativeMove(Vec2d dx) {
 		position.x += dx.x;
 		position.y += dx.y;
+		lastMovementAngle = Math.atan(dx.y / dx.x);
 	}
 
 	public double getHealth() {
@@ -63,6 +82,6 @@ public class Animal {
 	}
 
 	public static double calculateDistance(Animal a, Animal b) {
-		return a.getPosition().subtract(b.getPosition()).getMagnitude();
+		return a.getPosition().distanceTo(b.getPosition());
 	}
 }

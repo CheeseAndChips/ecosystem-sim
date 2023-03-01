@@ -39,4 +39,8 @@ public class Vec2d {
 			y *= maxMagnitude / magnitude;
 		}
 	}
+
+	public double distanceTo(Vec2d other) {
+		return other.subtract(this).getMagnitude();
+	}
 }
