@@ -22,15 +22,18 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	private List<Wolf> wolves;
 	private List<Rabbit> rabbits;
 
-	private Timer timer;
-	private long oldTime;
-	public Camera sceneCamera;
-	private double cameraMovementSpeed = 75.0f;
-	private double zoomSpeed = 1.0f;
 	private int framerate;
 	private HashSet<Character> pressedKeyCodes;
-	private boolean displayFps = true;
+	private Timer timer;
 
+	// camera and camera movement
+	private double cameraMovementSpeed = 75.0f;
+	private double zoomSpeed = 1.0f;
+	public Camera sceneCamera;
+
+	// fps drawing
+	private boolean displayFps = true;
+	private long lastFrameTime;
 	private final Font fpsFont = new Font("", Font.PLAIN, 24);
 	private final Point fpsPosition = new Point(50, 50);
 
@@ -59,7 +62,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		});
 	}
 
-	public void handleMovement() {
+	public void handleCameraMovement() {
 		double dx = cameraMovementSpeed / framerate / sceneCamera.zoom;
 		double dz = 1 + zoomSpeed / framerate;
 		if(pressedKeyCodes.contains('w')) sceneCamera.y += dx;
@@ -80,7 +83,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		handleMovement();
+		handleCameraMovement();
 		repaint();
 	}
 	
@@ -114,8 +117,8 @@ public class DrawingPanel extends JPanel implements ActionListener {
 			return;
 
 		long newTime = System.nanoTime();
-		long nsSpent = newTime - oldTime;
-		oldTime = newTime;
+		long nsSpent = newTime - lastFrameTime;
+		lastFrameTime = newTime;
 
 		float fps = (1e9f / nsSpent);
 		g.setFont(fpsFont);
