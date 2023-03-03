@@ -1,4 +1,7 @@
-package simulator;
+package simulator.drawing;
+
+import simulator.animals.*;
+import simulator.Vec2d;
 
 import java.awt.Dimension;
 import java.awt.Font;

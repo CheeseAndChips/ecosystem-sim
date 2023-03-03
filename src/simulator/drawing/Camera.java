@@ -1,4 +1,4 @@
-package simulator;
+package simulator.drawing;
 
 public class Camera {
 	public double x, y;

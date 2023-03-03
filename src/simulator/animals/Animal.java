@@ -1,4 +1,8 @@
-package simulator;
+package simulator.animals;
+
+import simulator.Vec2d;
+import simulator.EcosystemSimulator;
+import simulator.drawing.DrawingPanel;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

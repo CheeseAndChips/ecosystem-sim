@@ -1,9 +1,12 @@
-package simulator;
+package simulator.animals;
+
+import simulator.Vec2d;
+import simulator.EcosystemSimulator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-class Wolf extends Animal {
+public class Wolf extends Animal {
 	private static final double killRadius = 10.0f;
 	private int kills = 0;
 

@@ -1,7 +1,12 @@
 package simulator;
 
+import simulator.drawing.DrawingPanel;
+import simulator.animals.*;
+
 import java.awt.Dimension;
 import java.util.Random;
+import simulator.animals.Wolf;
+import simulator.animals.Rabbit;
 
 import javax.swing.JFrame;
 

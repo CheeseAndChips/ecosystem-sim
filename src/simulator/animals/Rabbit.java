@@ -1,8 +1,11 @@
-package simulator;
+package simulator.animals;
+
+import simulator.Vec2d;
+import simulator.EcosystemSimulator;
 
 import java.awt.Color;
 
-class Rabbit extends Animal {
+public class Rabbit extends Animal {
 	@Override
 	public Color getDrawColor() { return Color.GREEN; }
 	@Override
