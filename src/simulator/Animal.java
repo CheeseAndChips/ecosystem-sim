@@ -2,10 +2,10 @@ package simulator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Random;
 
 public abstract class Animal {
 	private Vec2d position;
+	protected double visionRadius;
 	protected double health = 100.0;
 	protected double movementSpeed = 50.0;
 	protected DrawingPanel panel;
@@ -17,11 +17,12 @@ public abstract class Animal {
 	public int getCircleRadius() { return 20; }
 
 	public Animal() {
-		this(new Vec2d(0, 0));	
+		this(new Vec2d(0, 0), 300.0f);	
 	}
 
-	public Animal(Vec2d position) {
+	public Animal(Vec2d position, double visionRadius) {
 		this.position = position;
+		this.visionRadius = visionRadius;
 	}
 
 	public void registerDrawingPanel(DrawingPanel panel) {
@@ -42,8 +43,18 @@ public abstract class Animal {
 		moveTowards(other.position, dt);
 	}
 
-	public void moveTowards(Vec2d destPosition, double dt) {
-		Vec2d dx = destPosition.subtract(position);
+	public void moveTowards(Vec2d point, double dt) {
+		Vec2d dx = point.subtract(position);
+		dx.capMagnitude(movementSpeed * dt);
+		relativeMove(dx);
+	}
+
+	public void moveAwayFrom(Animal other, double dt) {
+		moveAwayFrom(other.position, dt);
+	}
+
+	public void moveAwayFrom(Vec2d point, double dt) {
+		Vec2d dx = position.subtract(point);
 		dx.capMagnitude(movementSpeed * dt);
 		relativeMove(dx);
 	}
@@ -83,5 +94,16 @@ public abstract class Animal {
 
 	public static double calculateDistance(Animal a, Animal b) {
 		return a.getPosition().distanceTo(b.getPosition());
+	}
+
+	protected Animal verifyMaxDistance(Animal other, double maxDistance) {
+		if(other == null) return null;
+		if(Animal.calculateDistance(this, other) > maxDistance) return null;
+		return other;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("{%s at position %s}", this.getClass().getSimpleName(), this.position.toString());
 	}
 }

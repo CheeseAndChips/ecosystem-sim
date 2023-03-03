@@ -3,7 +3,6 @@ package simulator;
 import java.awt.Color;
 
 class Wolf extends Animal {
-	private double visionRadius;
 	private static final double killRadius = 10.0f;
 
 	@Override
@@ -11,28 +10,17 @@ class Wolf extends Animal {
 	@Override
 	public int getCircleRadius() { return 25; }
 	
-	public Wolf(double visionRadius) {
+	public Wolf() {
 		super();	
-		this.visionRadius = visionRadius;
 	}
 
-	public Wolf(double visionRadius, Vec2d position) {
-		super(position);
+	public Wolf(Vec2d position, double visionRadius) {
+		super(position, visionRadius);
 		this.visionRadius = visionRadius;
-	}
-
-	public Rabbit findClosestAttackable() {
-		Rabbit found = this.panel.findClosestRabbit(getPosition());
-		if(found == null)
-			return null;
-		double distance = Animal.calculateDistance(this, found);
-		if(distance >= visionRadius)
-			return null;
-		return found;
 	}
 
 	public void doTick() {
-		Rabbit toAttack = findClosestAttackable();
+		Animal toAttack = verifyMaxDistance(panel.findClosestRabbit(getPosition()), this.visionRadius);
 		if(toAttack == null) {
 			moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
 		} else {

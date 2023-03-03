@@ -74,16 +74,6 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		if(pressedKeyCodes.contains('-')) sceneCamera.zoom /= dz; 
 	}
 
-	public void addWolf(Wolf animal) {
-		animal.registerDrawingPanel(this);
-		wolves.add(animal);
-	}
-
-	public void addRabbit(Rabbit animal) {
-		animal.registerDrawingPanel(this);
-		rabbits.add(animal);
-	}
-
 	public void handleAnimalAI() {
 		for(Rabbit r : rabbits) {
 			r.doTick();
@@ -93,8 +83,14 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	public void addAnimal(Animal animal) {
+		animal.registerDrawingPanel(this);
+		if(animal instanceof Wolf) wolves.add((Wolf)animal);
+		else if(animal instanceof Rabbit) rabbits.add((Rabbit)animal);
+		// TODO add exception
+	}
+
 	public void registerDead(Animal animal) {
-		System.out.println("Registered as dead");
 		if(animal instanceof Wolf) wolves.remove(animal);
 		else if(animal instanceof Rabbit) rabbits.remove(animal);
 	}

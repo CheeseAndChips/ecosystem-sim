@@ -25,7 +25,15 @@ public class EcosystemSimulator {
 		frame.add(panel);
 		frame.setVisible(true);
 
-		panel.addWolf(new Wolf(300.0f, new Vec2d(0, 0)));
-		panel.addRabbit(new Rabbit(new Vec2d(300, 200)));
+		for(int i = 0; i < 5; i++) {
+			panel.addAnimal(new Wolf(genRandomPoint(400), 300.0));
+			panel.addAnimal(new Rabbit(genRandomPoint(400), 300.0));
+		}
+	}
+
+	public static Vec2d genRandomPoint(double range) {
+		double x = 2*EcosystemSimulator.rng.nextDouble() - 1;
+		double y = 2*EcosystemSimulator.rng.nextDouble() - 1;
+		return new Vec2d(x * range, y * range);
 	}
 }
