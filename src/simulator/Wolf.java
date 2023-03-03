@@ -4,6 +4,7 @@ import java.awt.Color;
 
 class Wolf extends Animal {
 	private static final double killRadius = 10.0f;
+	private int kills = 0;
 
 	@Override
 	public Color getDrawColor() { return Color.RED; }
@@ -28,6 +29,7 @@ class Wolf extends Animal {
 
 			if(Animal.calculateDistance(this, toAttack) <= killRadius) {
 				panel.registerDead(toAttack);	
+				kills++;
 			}
 		}
 	}

@@ -67,7 +67,7 @@ public abstract class Animal {
 		relativeMove(dx);
 	}
 
-	public void relativeMove(Vec2d dx) {
+	public final void relativeMove(Vec2d dx) {
 		position.x += dx.x;
 		position.y += dx.y;
 		lastMovementAngle = Math.atan(dx.y / dx.x);

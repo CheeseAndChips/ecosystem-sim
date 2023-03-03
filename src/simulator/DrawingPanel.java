@@ -84,6 +84,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void addAnimal(Animal animal) {
+		System.out.println("Adding animal " + animal.toString());
 		animal.registerDrawingPanel(this);
 		if(animal instanceof Wolf) wolves.add((Wolf)animal);
 		else if(animal instanceof Rabbit) rabbits.add((Rabbit)animal);

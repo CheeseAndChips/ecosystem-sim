@@ -9,12 +9,12 @@ class Rabbit extends Animal {
 	public int getCircleRadius() { return 15; }
 
 	public Rabbit() {
-		super()	;
+		super();
 	}
 
 	public Rabbit(Vec2d position, double visionRadius) {
 		super(position, visionRadius);
-		this.movementSpeed *= .9;
+		this.movementSpeed *= .9; // TODO do it properly
 	}
 
 	public void doTick() {
