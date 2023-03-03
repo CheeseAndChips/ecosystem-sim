@@ -97,26 +97,21 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public Wolf findClosestWolf(Vec2d point) {
-		Wolf result = null;
-		double dist = Double.POSITIVE_INFINITY;
-		for(Wolf w : wolves) {
-			double currDist = w.getPosition().distanceTo(point);
-			if(dist > currDist) {
-				dist = currDist;
-				result = w;
-			}
-		}
-		return result;
+		return findClosestAnimal(wolves, point);
 	}
 
 	public Rabbit findClosestRabbit(Vec2d point) {
-		Rabbit result = null;
+		return findClosestAnimal(rabbits, point);
+	}
+
+	public static <T extends Animal> T findClosestAnimal(List<T> choices, Vec2d point) {
+		T result = null;
 		double dist = Double.POSITIVE_INFINITY;
-		for(Rabbit r : rabbits) {
-			double currDist = r.getPosition().distanceTo(point);
+		for(T t : choices) {
+			double currDist = t.getPosition().distanceTo(point);
 			if(dist > currDist) {
 				dist = currDist;
-				result = r;
+				result = t;
 			}
 		}
 		return result;
