@@ -1,6 +1,7 @@
 package simulator;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 
 class Wolf extends Animal {
 	private static final double killRadius = 10.0f;
@@ -32,5 +33,12 @@ class Wolf extends Animal {
 				kills++;
 			}
 		}
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		super.draw(g);
+		Vec2d pos = getPosition();
+		g.drawString("Kills: " + String.valueOf(kills), (int)pos.x, (int)(pos.y - getCircleRadius() * .7));
 	}
 }
