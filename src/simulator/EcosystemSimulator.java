@@ -1,12 +1,11 @@
 package simulator;
 
 import simulator.drawing.DrawingPanel;
-import simulator.animals.*;
+import simulator.animals.Wolf;
+import simulator.animals.Rabbit;
 
 import java.awt.Dimension;
 import java.util.Random;
-import simulator.animals.Wolf;
-import simulator.animals.Rabbit;
 
 import javax.swing.JFrame;
 
@@ -22,6 +21,7 @@ public class EcosystemSimulator {
 	public static void runWindow() {
 		JFrame frame = new JFrame();
 		DrawingPanel panel = new DrawingPanel(framerate);
+		panel.startSimulation();
 
 		frame.setSize(windowSize);
 		frame.setTitle("Ecosystem simulator");

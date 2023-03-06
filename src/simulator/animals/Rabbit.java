@@ -21,7 +21,7 @@ public class Rabbit extends Animal {
 	}
 
 	public Animal findGoal() {
-		return panel.findClosestWolf(getPosition());
+		return container.findClosestWolf(getPosition());
 	}
 
 	public void handleGoal(Animal animal) {

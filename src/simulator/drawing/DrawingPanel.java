@@ -9,8 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 import java.awt.Graphics;
@@ -22,8 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class DrawingPanel extends JPanel implements ActionListener {
-	private List<Wolf> wolves;
-	private List<Rabbit> rabbits;
+	private AnimalContainer animals;
+	private Queue<Animal> toAdd;
+	private Lock queueLock;
 
 	private int framerate;
 	private HashSet<Character> pressedKeyCodes;
@@ -46,12 +51,12 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		setFocusable(true);
 		requestFocusInWindow();
 
-		wolves = new ArrayList<>();
-		rabbits = new ArrayList<>();
+		animals = new AnimalContainer();
+		toAdd = new ArrayDeque<>();
+		queueLock = new ReentrantLock();
 		pressedKeyCodes = new HashSet<Character>();
 		sceneCamera = new Camera();
 		timer = new Timer(1000 / framerate, this);
-		timer.start();
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -63,6 +68,14 @@ public class DrawingPanel extends JPanel implements ActionListener {
 				pressedKeyCodes.remove(Character.toLowerCase(e.getKeyChar()));
 			}
 		});
+	}
+
+	public void startSimulation() {
+		timer.start();
+	}
+
+	public void stopSimulation() {
+		timer.stop();
 	}
 
 	public void handleCameraMovement() {
@@ -78,49 +91,35 @@ public class DrawingPanel extends JPanel implements ActionListener {
 	}
 
 	public void handleAnimalAI() {
-		for(Rabbit r : rabbits) {
-			r.handleAI();
+		for(Animal a : animals) {
+			a.handleAI();
 		}
-		for(Wolf w : wolves) {
-			w.handleAI();
-		}
+		animals.cleanupDeadAnimals();
 	}
 
 	public void addAnimal(Animal animal) {
-		System.out.println("Adding animal " + animal.toString());
-		animal.registerDrawingPanel(this);
-		if(animal instanceof Wolf) wolves.add((Wolf)animal);
-		else if(animal instanceof Rabbit) rabbits.add((Rabbit)animal);
-		// TODO add exception
-	}
-
-	public void registerDead(Animal animal) {
-		if(animal instanceof Wolf) wolves.remove(animal);
-		else if(animal instanceof Rabbit) rabbits.remove(animal);
-	}
-
-	public Wolf findClosestWolf(Vec2d point) {
-		return findClosestAnimal(wolves, point);
-	}
-
-	public Rabbit findClosestRabbit(Vec2d point) {
-		return findClosestAnimal(rabbits, point);
-	}
-
-	public static <T extends Animal> T findClosestAnimal(List<T> choices, Vec2d point) {
-		T result = null;
-		double dist = Double.POSITIVE_INFINITY;
-		for(T t : choices) {
-			double currDist = t.getPosition().distanceTo(point);
-			if(dist > currDist) {
-				dist = currDist;
-				result = t;
-			}
+		queueLock.lock();
+		try {
+			toAdd.add(animal);
+			System.out.println("Adding animal " + animal.toString());
+		} finally {
+			queueLock.unlock();
 		}
-		return result;
+	}
+
+	private void moveFromQueueToContainer() {
+		queueLock.lock();
+		try {
+			while(!toAdd.isEmpty()) {
+				animals.addAnimal(toAdd.remove());
+			}
+		} finally {
+			queueLock.unlock();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		moveFromQueueToContainer();
 		handleCameraMovement();
 		handleAnimalAI();
 		repaint();
@@ -139,11 +138,8 @@ public class DrawingPanel extends JPanel implements ActionListener {
 		newTransform.scale(sceneCamera.zoom, sceneCamera.zoom);
 		newTransform.translate(sceneCamera.x, sceneCamera.y);
 		g2.setTransform(newTransform);
-		for(Animal ent : rabbits) {
-			ent.draw(g2);
-		}
-		for(Animal ent : wolves) {
-			ent.draw(g2);
+		for(Animal animal : animals) {
+			animal.draw(g2);
 		}
 		g2.setTransform(oldTransform);
 

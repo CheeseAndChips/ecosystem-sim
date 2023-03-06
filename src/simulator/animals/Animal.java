@@ -2,7 +2,7 @@ package simulator.animals;
 
 import simulator.Vec2d;
 import simulator.EcosystemSimulator;
-import simulator.drawing.DrawingPanel;
+import simulator.drawing.AnimalContainer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,7 +12,7 @@ public abstract class Animal {
 	protected double visionRadius;
 	protected double health = 100.0;
 	protected double movementSpeed = 50.0;
-	protected DrawingPanel panel;
+	protected AnimalContainer container;
 
 	protected double lastMovementAngle = EcosystemSimulator.rng.nextDouble() * 2 * Math.PI;
 
@@ -29,12 +29,20 @@ public abstract class Animal {
 		this.visionRadius = visionRadius;
 	}
 
-	public void registerDrawingPanel(DrawingPanel panel) {
-		this.panel = panel;
+	public void registerContainer(AnimalContainer container) {
+		this.container = container;
 	}
 
 	public abstract Animal findGoal();
 	public abstract void handleGoal(Animal animal);
+
+	public boolean isAlive() {
+		return health > 0;
+	}
+
+	public void kill() {
+		health = 0;
+	}
 
 	public void wander() {
 		moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);

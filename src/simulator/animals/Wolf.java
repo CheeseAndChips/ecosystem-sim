@@ -25,14 +25,14 @@ public class Wolf extends Animal {
 	}
 
 	public Animal findGoal() {
-		return panel.findClosestRabbit(this.getPosition());
+		return container.findClosestRabbit(this.getPosition());
 	}
 	
 	public void handleGoal(Animal animal) {
 		moveTowards(animal, 1.0 / EcosystemSimulator.framerate);	
 
 		if(Animal.calculateDistance(this, animal) <= killRadius) {
-			panel.registerDead(animal);
+			animal.kill();
 			kills++;
 		}
 	}
