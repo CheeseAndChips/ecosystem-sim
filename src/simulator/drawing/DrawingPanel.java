@@ -79,10 +79,10 @@ public class DrawingPanel extends JPanel implements ActionListener {
 
 	public void handleAnimalAI() {
 		for(Rabbit r : rabbits) {
-			r.doTick();
+			r.handleAI();
 		}
 		for(Wolf w : wolves) {
-			w.doTick();
+			w.handleAI();
 		}
 	}
 

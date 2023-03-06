@@ -20,12 +20,11 @@ public class Rabbit extends Animal {
 		this.movementSpeed *= .9; // TODO do it properly
 	}
 
-	public void doTick() {
-		Animal toAvoid = verifyMaxDistance(panel.findClosestWolf(getPosition()), this.visionRadius);
-		if(toAvoid == null) {
-			moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
-		} else {
-			moveAwayFrom(toAvoid, 1.0 / EcosystemSimulator.framerate);
-		}
+	public Animal findGoal() {
+		return panel.findClosestWolf(getPosition());
+	}
+
+	public void handleGoal(Animal animal) {
+		moveAwayFrom(animal, 1.0 / EcosystemSimulator.framerate);	
 	}
 }

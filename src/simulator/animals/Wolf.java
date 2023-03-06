@@ -24,17 +24,16 @@ public class Wolf extends Animal {
 		this.visionRadius = visionRadius;
 	}
 
-	public void doTick() {
-		Animal toAttack = verifyMaxDistance(panel.findClosestRabbit(getPosition()), this.visionRadius);
-		if(toAttack == null) {
-			moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
-		} else {
-			moveTowards(toAttack, 1.0 / EcosystemSimulator.framerate);
+	public Animal findGoal() {
+		return panel.findClosestRabbit(this.getPosition());
+	}
+	
+	public void handleGoal(Animal animal) {
+		moveTowards(animal, 1.0 / EcosystemSimulator.framerate);	
 
-			if(Animal.calculateDistance(this, toAttack) <= killRadius) {
-				panel.registerDead(toAttack);	
-				kills++;
-			}
+		if(Animal.calculateDistance(this, animal) <= killRadius) {
+			panel.registerDead(animal);
+			kills++;
 		}
 	}
 

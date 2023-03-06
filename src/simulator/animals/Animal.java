@@ -33,7 +33,21 @@ public abstract class Animal {
 		this.panel = panel;
 	}
 
-	public abstract void doTick();
+	public abstract Animal findGoal();
+	public abstract void handleGoal(Animal animal);
+
+	public void wander() {
+		moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
+	}
+	
+	public void handleAI() {
+		Animal goal = findGoal();
+		if(goal != null && goal.getPosition().distanceTo(this.getPosition()) <= visionRadius) {
+			handleGoal(goal);
+		} else {
+			wander();
+		}
+	}
 
 	public Vec2d getPosition() {
 		return new Vec2d(position);
@@ -98,12 +112,6 @@ public abstract class Animal {
 
 	public static double calculateDistance(Animal a, Animal b) {
 		return a.getPosition().distanceTo(b.getPosition());
-	}
-
-	protected Animal verifyMaxDistance(Animal other, double maxDistance) {
-		if(other == null) return null;
-		if(Animal.calculateDistance(this, other) > maxDistance) return null;
-		return other;
 	}
 
 	@Override
