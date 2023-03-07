@@ -34,12 +34,14 @@ public class Vec2d {
 		return Math.sqrt(getMagnitudeSqr());
 	}
 
-	public void capMagnitude(double maxMagnitude) {
+	public Vec2d capMagnitude(double maxMagnitude) {
+		double x = this.x, y = this.y;
 		double magnitude = getMagnitude();
 		if(magnitude > maxMagnitude) {
 			x *= maxMagnitude / magnitude;
 			y *= maxMagnitude / magnitude;
 		}
+		return new Vec2d(x, y);
 	}
 
 	public static Vec2d generateRandomUnitVector(Random rng) {

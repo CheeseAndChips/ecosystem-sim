@@ -50,7 +50,8 @@ public abstract class Animal {
 			new Vec2d(
 				lastMovementDirection.x * movementSpeed * dt,
 				lastMovementDirection.y * movementSpeed * dt
-			)
+			),
+			dt
 		);
 	}
 	
@@ -76,9 +77,7 @@ public abstract class Animal {
 	}
 
 	public void moveTowards(Vec2d point, double dt) {
-		Vec2d dx = point.subtract(position);
-		dx.capMagnitude(movementSpeed * dt);
-		relativeMove(dx);
+		relativeMove(point.subtract(position), dt);
 	}
 
 	public void moveAwayFrom(Animal other, double dt) {
@@ -86,12 +85,11 @@ public abstract class Animal {
 	}
 
 	public void moveAwayFrom(Vec2d point, double dt) {
-		Vec2d dx = position.subtract(point);
-		dx.capMagnitude(movementSpeed * dt);
-		relativeMove(dx);
+		relativeMove(position.subtract(point), dt);
 	}
 
-	public final void relativeMove(Vec2d dx) {
+	public final void relativeMove(Vec2d dx, double dt) {
+		dx = dx.capMagnitude(dt * movementSpeed);
 		position.x += dx.x;
 		position.y += dx.y;
 		lastMovementDirection = dx.toUnitVector();
