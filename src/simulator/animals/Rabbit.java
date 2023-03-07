@@ -1,7 +1,6 @@
 package simulator.animals;
 
 import simulator.Vec2d;
-import simulator.EcosystemSimulator;
 
 import java.awt.Color;
 
@@ -15,16 +14,15 @@ public class Rabbit extends Animal {
 		super();
 	}
 
-	public Rabbit(Vec2d position, double visionRadius) {
-		super(position, visionRadius);
-		this.movementSpeed *= .9; // TODO do it properly
+	public Rabbit(Vec2d position, double visionRadius, double movementSpeed) {
+		super(position, visionRadius, movementSpeed);
 	}
 
 	public Animal findGoal() {
 		return container.findClosestWolf(getPosition());
 	}
 
-	public void handleGoal(Animal animal) {
-		moveAwayFrom(animal, 1.0 / EcosystemSimulator.framerate);	
+	public void handleGoal(Animal animal, double dt) {
+		moveAwayFrom(animal, dt);	
 	}
 }

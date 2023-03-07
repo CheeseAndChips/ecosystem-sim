@@ -1,7 +1,6 @@
 package simulator.animals;
 
 import simulator.Vec2d;
-import simulator.EcosystemSimulator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,20 +15,19 @@ public class Wolf extends Animal {
 	public int getCircleRadius() { return 25; }
 	
 	public Wolf() {
-		super();	
+		super();
 	}
 
-	public Wolf(Vec2d position, double visionRadius) {
-		super(position, visionRadius);
-		this.visionRadius = visionRadius;
+	public Wolf(Vec2d position, double visionRadius, double movementSpeed) {
+		super(position, visionRadius, movementSpeed);
 	}
 
 	public Animal findGoal() {
 		return container.findClosestRabbit(this.getPosition());
 	}
 	
-	public void handleGoal(Animal animal) {
-		moveTowards(animal, 1.0 / EcosystemSimulator.framerate);	
+	public void handleGoal(Animal animal, double dt) {
+		moveTowards(animal, dt);	
 
 		if(Animal.calculateDistance(this, animal) <= killRadius) {
 			animal.kill();

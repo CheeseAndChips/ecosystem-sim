@@ -11,7 +11,7 @@ public abstract class Animal {
 	private Vec2d position;
 	protected double visionRadius;
 	protected double health = 100.0;
-	protected double movementSpeed = 50.0;
+	protected double movementSpeed;
 	protected AnimalContainer container;
 
 	protected double lastMovementAngle = EcosystemSimulator.rng.nextDouble() * 2 * Math.PI;
@@ -21,12 +21,13 @@ public abstract class Animal {
 	public int getCircleRadius() { return 20; }
 
 	public Animal() {
-		this(new Vec2d(0, 0), 300.0f);	
+		this(new Vec2d(0, 0), 300.0f, 50.0f);	
 	}
 
-	public Animal(Vec2d position, double visionRadius) {
+	public Animal(Vec2d position, double visionRadius, double movementSpeed) {
 		this.position = position;
 		this.visionRadius = visionRadius;
+		this.movementSpeed = movementSpeed;
 	}
 
 	public void registerContainer(AnimalContainer container) {
@@ -34,7 +35,7 @@ public abstract class Animal {
 	}
 
 	public abstract Animal findGoal();
-	public abstract void handleGoal(Animal animal);
+	public abstract void handleGoal(Animal animal, double dt);
 
 	public boolean isAlive() {
 		return health > 0;
@@ -44,24 +45,24 @@ public abstract class Animal {
 		health = 0;
 	}
 
-	public void wander() {
-		moveWithAngle(lastMovementAngle, 1.0 / EcosystemSimulator.framerate);
+	public void wander(double dt) {
+		moveWithAngle(lastMovementAngle, dt);
 	}
 	
-	public void handleAI() {
+	public void handleAI(double dt) {
 		Animal goal = findGoal();
 		if(goal != null && goal.getPosition().distanceTo(this.getPosition()) <= visionRadius) {
-			handleGoal(goal);
+			handleGoal(goal, dt);
 		} else {
-			wander();
+			wander(dt);
 		}
 	}
 
-	public Vec2d getPosition() {
+	public final Vec2d getPosition() {
 		return new Vec2d(position);
 	}
 
-	public void setPosition(Vec2d newPosition) {
+	public final void setPosition(Vec2d newPosition) {
 		position = new Vec2d(newPosition);
 	}
 
