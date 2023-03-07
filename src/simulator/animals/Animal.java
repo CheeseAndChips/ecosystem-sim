@@ -14,7 +14,7 @@ public abstract class Animal {
 	protected double movementSpeed;
 	protected AnimalContainer container;
 
-	protected double lastMovementAngle = EcosystemSimulator.rng.nextDouble() * 2 * Math.PI;
+	protected Vec2d lastMovementDirection = Vec2d.generateRandomUnitVector(EcosystemSimulator.rng);
 
 	// for painting 
 	public Color getDrawColor() { return Color.GRAY; }
@@ -30,12 +30,12 @@ public abstract class Animal {
 		this.movementSpeed = movementSpeed;
 	}
 
+	public abstract Animal findGoal();
+	public abstract void handleGoal(Animal animal, double dt);
+
 	public void registerContainer(AnimalContainer container) {
 		this.container = container;
 	}
-
-	public abstract Animal findGoal();
-	public abstract void handleGoal(Animal animal, double dt);
 
 	public boolean isAlive() {
 		return health > 0;
@@ -46,7 +46,12 @@ public abstract class Animal {
 	}
 
 	public void wander(double dt) {
-		moveWithAngle(lastMovementAngle, dt);
+		relativeMove(
+			new Vec2d(
+				lastMovementDirection.x * movementSpeed * dt,
+				lastMovementDirection.y * movementSpeed * dt
+			)
+		);
 	}
 	
 	public void handleAI(double dt) {
@@ -86,18 +91,10 @@ public abstract class Animal {
 		relativeMove(dx);
 	}
 
-	public void moveWithAngle(double ang, double dt) {
-		Vec2d dx = new Vec2d(
-			Math.cos(ang) * movementSpeed * dt,
-			Math.sin(ang) * movementSpeed * dt
-		);
-		relativeMove(dx);
-	}
-
 	public final void relativeMove(Vec2d dx) {
 		position.x += dx.x;
 		position.y += dx.y;
-		lastMovementAngle = Math.atan(dx.y / dx.x);
+		lastMovementDirection = dx.toUnitVector();
 	}
 
 	public double getHealth() {

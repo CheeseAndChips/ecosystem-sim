@@ -1,5 +1,7 @@
 package simulator;
 
+import java.util.Random;
+
 public class Vec2d {
 	public double x, y;
 
@@ -38,6 +40,16 @@ public class Vec2d {
 			x *= maxMagnitude / magnitude;
 			y *= maxMagnitude / magnitude;
 		}
+	}
+
+	public static Vec2d generateRandomUnitVector(Random rng) {
+		double angle = 2 * Math.PI * rng.nextDouble();
+		return new Vec2d(Math.sin(angle), Math.cos(angle));
+	}
+
+	public Vec2d toUnitVector() {
+		double magnitude = getMagnitude();
+		return new Vec2d(x / magnitude, y / magnitude);
 	}
 
 	public double distanceTo(Vec2d other) {
