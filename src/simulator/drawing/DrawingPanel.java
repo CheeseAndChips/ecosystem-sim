@@ -92,7 +92,7 @@ public class DrawingPanel extends JPanel implements ActionListener {
 
 	public void handleAnimalAI() {
 		for(Animal a : animals) {
-			a.handleAI(1.0 / framerate);
+			a.handleTick(1.0 / framerate);
 		}
 		animals.cleanupDeadAnimals();
 	}

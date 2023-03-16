@@ -1,8 +1,7 @@
 package simulator;
 
 import simulator.drawing.DrawingPanel;
-import simulator.animals.Wolf;
-import simulator.animals.Rabbit;
+import simulator.animals.*;
 
 import java.awt.Dimension;
 import java.util.Random;
@@ -14,11 +13,11 @@ public class EcosystemSimulator {
 	private static final int framerate = 60;
 	public static final Random rng = new Random();
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		runWindow();	
 	}
 
-	public static void runWindow() {
+	public static void runWindow() throws InterruptedException {
 		JFrame frame = new JFrame();
 		DrawingPanel panel = new DrawingPanel(framerate);
 		panel.startSimulation();
@@ -33,6 +32,17 @@ public class EcosystemSimulator {
 		for(int i = 0; i < 10; i++) {
 			panel.addAnimal(new Wolf(genRandomPoint(400), 300.0, 50.0));
 			panel.addAnimal(new Rabbit(genRandomPoint(400), 300.0, 40.0));
+		}
+
+		while(true) {
+			Animal created;
+			if(rng.nextDouble() < 0.2){
+				created = new Wolf(genRandomPoint(400), 300.0, 50.0);	
+			} else {
+				created = new Rabbit(genRandomPoint(400), 300.0, 50.0);	
+			}
+			panel.addAnimal(created);
+			Thread.sleep(5 * 1000);
 		}
 	}
 

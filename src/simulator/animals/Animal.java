@@ -37,7 +37,7 @@ public abstract class Animal {
 		this.container = container;
 	}
 
-	public boolean isAlive() {
+	public final boolean isAlive() {
 		return health > 0;
 	}
 
@@ -55,7 +55,7 @@ public abstract class Animal {
 		);
 	}
 	
-	public void handleAI(double dt) {
+	public void handleTick(double dt) {
 		Animal goal = findGoal();
 		if(goal != null && goal.getPosition().distanceTo(this.getPosition()) <= visionRadius) {
 			handleGoal(goal, dt);
@@ -64,11 +64,11 @@ public abstract class Animal {
 		}
 	}
 
-	public final Vec2d getPosition() {
+	public Vec2d getPosition() {
 		return new Vec2d(position);
 	}
 
-	public final void setPosition(Vec2d newPosition) {
+	public void setPosition(Vec2d newPosition) {
 		position = new Vec2d(newPosition);
 	}
 
@@ -95,7 +95,7 @@ public abstract class Animal {
 		lastMovementDirection = dx.toUnitVector();
 	}
 
-	public double getHealth() {
+	public final double getHealth() {
 		return health;
 	}
 
