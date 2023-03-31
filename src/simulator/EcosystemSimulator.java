@@ -1,54 +1,29 @@
 package simulator;
 
-import simulator.drawing.DrawingPanel;
 import simulator.animals.*;
+import simulator.util.Vec2d;
 
-import java.awt.Dimension;
 import java.util.Random;
 
-import javax.swing.JFrame;
 
 public class EcosystemSimulator {
-	private static final Dimension windowSize = new Dimension(1280, 720);
-	private static final int framerate = 60;
 	public static final Random rng = new Random();
 
-	public static void main(String args[]) throws InterruptedException {
-		runWindow();	
+	public static void main(String args[]) {
+		runTest();
 	}
 
-	public static void runWindow() throws InterruptedException {
-		JFrame frame = new JFrame();
-		DrawingPanel panel = new DrawingPanel(framerate);
-		panel.startSimulation();
+	public static void runTest() {
+		Animal rabbit = new Rabbit(new Vec2d(200, 0), 20);
+		Animal wolf = new Wolf(new Vec2d(0, 0), 10);
+		while(rabbit.isAlive()) {
+			rabbit.move(new Vec2d(0, 10000));
+			wolf.move(rabbit.getPosition().subtract(wolf.getPosition()));
+			if(((Wolf)wolf).tryAttacking(rabbit)) System.out.println("Attack successful");
+			else System.out.println("Attack failed");
 
-		frame.setSize(windowSize);
-		frame.setTitle("Ecosystem simulator");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.add(panel);
-		frame.setVisible(true);
-
-		for(int i = 0; i < 10; i++) {
-			panel.addAnimal(new Wolf(genRandomPoint(400), 300.0, 50.0));
-			panel.addAnimal(new Rabbit(genRandomPoint(400), 300.0, 40.0));
+			System.out.println(rabbit);
+			System.out.println(wolf);
 		}
-
-		while(true) {
-			Animal created;
-			if(rng.nextDouble() < 0.2){
-				created = new Wolf(genRandomPoint(400), 300.0, 50.0);	
-			} else {
-				created = new Rabbit(genRandomPoint(400), 300.0, 50.0);	
-			}
-			panel.addAnimal(created);
-			Thread.sleep(5 * 1000);
-		}
-	}
-
-	public static Vec2d genRandomPoint(double range) {
-		double x = 2*EcosystemSimulator.rng.nextDouble() - 1;
-		double y = 2*EcosystemSimulator.rng.nextDouble() - 1;
-		return new Vec2d(x * range, y * range);
 	}
 }

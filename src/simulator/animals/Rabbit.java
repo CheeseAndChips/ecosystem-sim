@@ -1,45 +1,31 @@
 package simulator.animals;
 
-import simulator.Vec2d;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
+import simulator.util.Vec2d;
 
 public class Rabbit extends Animal {
-	public double timeSurvived = 0.0f;
-
-	@Override
-	public Color getDrawColor() { return Color.GREEN; }
-	@Override
-	public int getCircleRadius() { return 15; }
+	private int timeSinceJump = 0;
+	private static int JUMP_COOLDOWN = 5;
 
 	public Rabbit() {
 		super();
 	}
 
-	public Rabbit(Vec2d position, double visionRadius, double movementSpeed) {
-		super(position, visionRadius, movementSpeed);
-	}
-
-	public Animal findGoal() {
-		return container.findClosestWolf(getPosition());
+	public Rabbit(Vec2d position, double movementSpeed) {
+		super(position, movementSpeed);
 	}
 
 	@Override
-	public void handleTick(double dt) {
-		timeSurvived += dt;
-		super.handleTick(dt);
-	}
-
-	public void handleGoal(Animal animal, double dt) {
-		moveAwayFrom(animal, dt);
+	public void move(Vec2d dx) {
+		if(this.timeSinceJump > 0) {
+			this.timeSinceJump--;
+		} else {
+			this.timeSinceJump = JUMP_COOLDOWN;
+			super.move(dx.capMagnitude(movementSpeed));
+		}
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
-		super.draw(g);
-		Vec2d pos = getPosition();
-		String formattedTime = String.format("%.1f s", timeSurvived);
-		g.drawString("Alive: " + formattedTime, (int)pos.x, (int)(pos.y - getCircleRadius() * .7));
+	public String toString() {
+		return "Rabbit at " + getPosition().toString();
 	}
 }
