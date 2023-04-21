@@ -1,11 +1,13 @@
 package simulator.animals;
 
+import simulator.exceptions.WrongGoalException;
 import simulator.util.Vec2d;
 
-public class Animal {
+public abstract class Animal implements AnimalAI {
 	private Vec2d position;
 	protected double health = 100.0;
 	protected double movementSpeed;
+	protected double visionDistance = 500.0f;
 
 	public Animal() {
 		this(new Vec2d(0, 0), 50.0f);	
@@ -22,6 +24,11 @@ public class Animal {
 
 	public void kill() {
 		health = 0;
+	}
+
+	public void handleTick(Animal goal) throws WrongGoalException {
+		if(this == goal)
+			throw new WrongGoalException(this, goal);
 	}
 
 	public Vec2d getPosition() {
