@@ -1,6 +1,7 @@
 package simulator;
 
 import simulator.animals.*;
+import simulator.exceptions.BadBreedingException;
 import simulator.exceptions.WrongGoalException;
 import simulator.util.Vec2d;
 
@@ -12,23 +13,32 @@ import java.util.Random;
 public class EcosystemSimulator {
 	public static final Random rng = new Random();
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws BadBreedingException { 
 		runTest();
 	}
 
-	public static void runTest() {
-		List<Animal> animals = new ArrayList<Animal>() {{
-			add(new Rabbit(new Vec2d(200, 0), 20));
-			add(new Wolf(new Vec2d(0, 0), 10));
-			add(new Rabbit(new Vec2d(300, 10), 20));
-		}};
+	public static void runTest() throws BadBreedingException {
+		List<Animal> animals = new ArrayList<Animal>();
+		animals.add(AnimalFactory.spawnRandomWolf(300.0, 20.0, 1e6));
+		for(int i = 0; i < 10; i++) {
+			animals.add(AnimalFactory.spawnRandomRabbit(300.0, 11.0, 500));
+		}
+
+		Animal closeRabbit1 = AnimalFactory.spawnRandomRabbit(1.0, 10.0, 500);
+		Animal closeRabbit2 = AnimalFactory.spawnRandomRabbit(1.0, 15.0, 500);
+		Animal child = AnimalFactory.breedAnimals(closeRabbit1, closeRabbit2);
+
+		animals.add(closeRabbit1);
+		animals.add(closeRabbit2);
+		animals.add(child);
+
+		System.out.println("Speed: " + child.getMovementSpeed());
+
+		int tick = 0;
 		while(animals.size() > 1) {
 			for(Animal a : animals) {
 				Animal goal;
-				if(rng.nextFloat() < .2f)
-					goal = animals.get(0);
-				else
-					goal = a.findGoal().apply(animals);
+				goal = a.findGoal().apply(animals);
 
 				try {
 					a.handleTick(goal);
@@ -38,11 +48,8 @@ public class EcosystemSimulator {
 			}
 
 			animals.removeIf(a -> !a.isAlive());
-
-			System.out.println("Alive animals:");
-			for(Animal a : animals) {
-				System.out.println(a);
-			}
+			tick++;
 		}
+		System.out.println("Ticks taken: " + tick);
 	}
 }

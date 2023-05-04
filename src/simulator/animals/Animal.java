@@ -7,15 +7,17 @@ public abstract class Animal implements AnimalAI, Cloneable {
 	private Vec2d position;
 	protected double health = 100.0;
 	protected double movementSpeed;
+
 	protected double visionDistance = 500.0f;
 
-	public Animal() {
-		this(new Vec2d(0, 0), 50.0f);	
+	public double getMovementSpeed() {
+		return movementSpeed;
 	}
 
-	public Animal(Vec2d position, double movementSpeed) {
+	public Animal(Vec2d position, double movementSpeed, double visionDistance) {
 		this.position = position;
 		this.movementSpeed = movementSpeed;
+		this.visionDistance = visionDistance;
 	}
 
 	public final boolean isAlive() {

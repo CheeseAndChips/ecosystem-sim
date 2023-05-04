@@ -3,20 +3,17 @@ package simulator.animals;
 import java.util.List;
 import java.util.function.Function;
 
+import simulator.EcosystemSimulator;
 import simulator.exceptions.WrongGoalException;
 import simulator.util.Vec2d;
 
 public class Wolf extends Animal {
 	private static final double KILL_RADIUS = 10.0f;
 	private int kills = 0;
-	private Vec2d lastMovementDirection = null;
+	private Vec2d lastMovementDirection = Vec2d.generateRandomUnitVector(EcosystemSimulator.rng);
 
-	public Wolf() {
-		super();
-	}
-
-	public Wolf(Vec2d position, double movementSpeed) {
-		super(position, movementSpeed);
+	public Wolf(Vec2d position, double movementSpeed, double visionDistance) {
+		super(position, movementSpeed, visionDistance);
 	}
 
 	public Function<List<Animal>, Animal> findGoal() {

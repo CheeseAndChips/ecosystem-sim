@@ -11,12 +11,8 @@ public class Rabbit extends Animal {
 	private int timeSinceJump = 0;
 	private static int JUMP_COOLDOWN = 5;
 
-	public Rabbit() {
-		super();
-	}
-
-	public Rabbit(Vec2d position, double movementSpeed) {
-		super(position, movementSpeed);
+	public Rabbit(Vec2d position, double movementSpeed, double visionDistance) {
+		super(position, movementSpeed, visionDistance);
 	}
 
 	public Function<List<Animal>, Animal> findGoal() {
