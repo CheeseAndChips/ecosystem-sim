@@ -51,7 +51,7 @@ public class Wolf extends Animal {
 	}
 
 	public void wander() {
-		Vec2d dx = new Vec2d(lastMovementDirection);
+		Vec2d dx = (Vec2d)lastMovementDirection.clone();
 		dx.x *= movementSpeed;
 		dx.y *= movementSpeed;
 		this.move(dx);
@@ -75,5 +75,13 @@ public class Wolf extends Animal {
 	@Override
 	public String toString() {
 		return "Wolf at " + getPosition().toString() + " with " + String.valueOf(kills) + " kills";
+	}
+
+	@Override
+	public Object clone() {
+		Wolf result = null;
+		result = (Wolf)super.clone();	
+		result.lastMovementDirection = (Vec2d)lastMovementDirection.clone();
+		return result;
 	}
 }

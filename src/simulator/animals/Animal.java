@@ -3,7 +3,7 @@ package simulator.animals;
 import simulator.exceptions.WrongGoalException;
 import simulator.util.Vec2d;
 
-public abstract class Animal implements AnimalAI {
+public abstract class Animal implements AnimalAI, Cloneable {
 	private Vec2d position;
 	protected double health = 100.0;
 	protected double movementSpeed;
@@ -32,11 +32,11 @@ public abstract class Animal implements AnimalAI {
 	}
 
 	public Vec2d getPosition() {
-		return new Vec2d(position);
+		return (Vec2d)position.clone();
 	}
 
 	public void setPosition(Vec2d newPosition) {
-		position = new Vec2d(newPosition);
+		position = (Vec2d)newPosition.clone();
 	}
 
 	public void move(Vec2d dx) {
@@ -57,5 +57,17 @@ public abstract class Animal implements AnimalAI {
 
 	public static double calculateDistance(Animal a, Animal b) {
 		return a.getPosition().distanceTo(b.getPosition());
+	}
+
+	@Override
+	public Object clone() {
+		Animal result = null;
+		try {
+			result = (Animal)super.clone();
+			result.position = (Vec2d)position.clone();
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -2,15 +2,11 @@ package simulator.util;
 
 import java.util.Random;
 
-public class Vec2d {
+public class Vec2d implements Cloneable {
 	public double x, y;
 
 	public Vec2d() {
 		this(0, 0);	
-	}
-
-	public Vec2d(Vec2d x) {
-		this(x.x, x.y);
 	}
 
 	public Vec2d(double x, double y) {
@@ -56,5 +52,9 @@ public class Vec2d {
 
 	public double distanceTo(Vec2d other) {
 		return other.subtract(this).getMagnitude();
+	}
+
+	public Object clone() {
+		return new Vec2d(this.x, this.y);
 	}
 }
