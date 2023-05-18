@@ -26,13 +26,21 @@ public class EcosystemSimulator {
 
 		Animal closeRabbit1 = AnimalFactory.spawnRandomRabbit(1.0, 10.0, 500);
 		Animal closeRabbit2 = AnimalFactory.spawnRandomRabbit(1.0, 15.0, 500);
-		Animal child = AnimalFactory.breedAnimals(closeRabbit1, closeRabbit2);
+		Animal child = (Animal)closeRabbit1.clone();
+
+		System.out.println("Speed: " + child.getMovementSpeed());
+		System.out.println(closeRabbit1);
+		System.out.println(child);
+
+		System.out.println("Changing...");
+		child.changeToZero();
+
+		System.out.println(closeRabbit1);
+		System.out.println(child);
 
 		animals.add(closeRabbit1);
 		animals.add(closeRabbit2);
 		animals.add(child);
-
-		System.out.println("Speed: " + child.getMovementSpeed());
 
 		int tick = 0;
 		while(animals.size() > 1) {

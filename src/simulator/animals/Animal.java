@@ -20,6 +20,11 @@ public abstract class Animal implements AnimalAI, Cloneable {
 		this.visionDistance = visionDistance;
 	}
 
+	public void changeToZero() {
+		this.position.x = 0;
+		this.position.y = 0;
+	}
+
 	public final boolean isAlive() {
 		return health > 0;
 	}
@@ -66,7 +71,7 @@ public abstract class Animal implements AnimalAI, Cloneable {
 		Animal result = null;
 		try {
 			result = (Animal)super.clone();
-			result.position = (Vec2d)position.clone();
+			// result.position = (Vec2d)position.clone();
 		} catch (CloneNotSupportedException ex) {
 			ex.printStackTrace();
 		}
